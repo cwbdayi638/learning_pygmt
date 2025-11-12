@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PyGMT：用 Python 畫出專業地圖的魔法</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --secondary: #34a853;
+            --accent: #f9ab00;
+            --dark: #202124;
+            --light: #f8f9fa;
+            --gray: #5f6368;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .logo i {
+            color: var(--secondary);
+        }
+        .nav-links a {
+            margin-left: 2rem;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        .hero {
+            padding: 120px 2rem 80px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300"><path d="M0,100 Q250,50 500,100 T1000,100 L1000,300 L0,300 Z" fill="%234a6cf7"/></svg>') no-repeat bottom;
+            background-size: cover;
+            opacity: 0.3;
+        }
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #fff, #a0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(26,115,232,0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(26,115,232,0.6);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        .btn-secondary:hover {
+            background: white;
+            color: var(--primary);
+        }
+        section {
+            padding: 80px 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .features {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--dark);
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            display: block;
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .feature-card {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #e0e0e0;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .icon-python { color: #3776AB; }
+        .icon-gmt { color: #f47721; }
+        .icon-chart { color: #34a853; }
+        .icon-3d { color: #ea4335; }
+        .icon-open { color: #f9ab00; }
+        .icon-fast { color: #1a73e8; }
+        .code-demo {
+            background: var(--dark);
+            color: #f8f9fa;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .code-demo::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .code-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 600;
+        }
+        .code-header i {
+            color: var(--secondary);
+        }
+        pre {
+            background: #2d2d2d;
+            padding: 1.5rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+        }
+        code {
+            color: #e6d874;
+        }
+        .keyword { color: #ff79c6; }
+        .string { color: #a1e87d; }
+        .comment { color: #6272a4; }
+        .demo-output {
+            margin-top: 2rem;
+            text-align: center;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .demo-output img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .why-pygmt {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 20px;
+            padding: 60px 40px;
+            margin: 4rem 0;
+        }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .vs-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+        .vs-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        .vs-list {
+            text-align: left;
+            margin-top: 1rem;
+        }
+        .vs-list li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .vs-list i {
+            color: var(--secondary);
+        }
+        .install {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .terminal {
+            background: #2d2d2d;
+            color: #f8f9fa;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            font-family: 'Roboto Mono', monospace;
+            text-align: left;
+            display: inline-block;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .terminal::before {
+            content: '$ ';
+            color: var(--secondary);
+        }
+        footer {
+            background: var(--dark);
+            color: #ccc;
+            padding: 60px 2rem 30px;
+            margin-top: 5rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        .footer-section a {
+            color: #aaa;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: #444;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #444;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            .nav-links {
+                display: none;
+            }
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 80%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <i class="fas fa-globe-asia"></i> PyGMT
+            </a>
+            <div class="nav-links">
+                <a href="#features">功能</a>
+                <a href="#demo">範例</a>
+                <a href="#install">安裝</a>
+                <a href="#docs">文件</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>PyGMT</h1>
+            <p class="subtitle">用 Python 輕鬆繪製專業等級的地圖與科學圖表</p>
+            <div class="cta-buttons">
+                <a href="#install" class="btn btn-primary">
+                    <i class="fas fa-download"></i> 立即安裝
+                </a>
+                <a href="https://www.pygmt.org" target="_blank" class="btn btn-secondary">
+                    <i class="fas fa-book"></i> 官方文件
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <h2 class="section-title">為什麼選擇 PyGMT？</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="fab fa-python feature-icon icon-python"></i>
+                <h3>純 Python 介面</h3>
+                <p>使用熟悉的 Python 語法，無需學習複雜的 GMT 指令。</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-map-marked-alt feature-icon icon-gmt"></i>
+                <h3>基於 GMT 核心</h3>
+                <p>繼承 GMT 30年專業地圖繪製技術，品質有保障。</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-area feature-icon icon-chart"></i>
+                <h3>科學視覺化</h3>
+                <p>完美支援地震、氣象、海洋、地質等領域圖表。</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-cube feature-icon icon-3d"></i>
+                <h3>3D 立體圖</h3>
+                <p>輕鬆繪製地形、地震斷層、海洋深度等3D視覺化。</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-lock-open feature-icon icon-open"></i>
+                <h3>完全開源</h3>
+                <p>免費使用，社群活躍，持續更新中。</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-bolt feature-icon icon-fast"></i>
+                <h3>高效能</h3>
+                <p>支援大數據集，快速渲染高解析度圖像。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo">
+        <div class="code-demo">
+            <div class="code-header">
+                <i class="fas fa-code"></i>
+                <span>只需 10 行程式碼，就能畫出專業地圖！</span>
+            </div>
+            <pre><code><span class="keyword">import</span> pygmt
+
+fig = pygmt.Figure()
+fig.coast(
+    region=[<span class="string">120</span>, <span class="string">123</span>, <span class="string">22</span>, <span class="string">26</span>],
+    projection=<span class="string">"M15c"</span>,
+    land=<span class="string">"#d3d3d3"</span>,
+    water=<span class="string">"#87CEEB"</span>,
+    shorelines=<span class="string">"1/0.5p,black"</span>,
+    frame=<span class="string">"a"</span>
+)
+fig.text(text=<span class="string">"臺灣地圖 by PyGMT"</span>, x=121.5, y=24.5, font=<span class="string">"18p,Helvetica-Bold,red"</span>)
+fig.savefig(<span class="string">"taiwan_map.png"</span>, dpi=300)
+fig.show()</code></pre>
+            <div class="demo-output">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAAAACXBIWXMAAAsTAAALEwEAmpwYAAAgAElEQVR4nOzdd3gU1f7H8e9m03vvwb0X9i5Z+xJCCCEkESCCIAiCIIggSIKgICAKgiAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIppX4BAAAElFTkSuQmCC" alt="台灣地圖範例">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="why-pygmt">
+        <h2 class="section-title">PyGMT vs 傳統 GMT</h2>
+        <div class="comparison">
+            <div class="vs-card">
+                <h3 class="vs-title">傳統 GMT</h3>
+                <ul class="vs-list">
+                    <li><i class="fas fa-times"></i> 複雜的 Shell 指令</li>
+                    <li><i class="fas fa-times"></i> 難以除錯與重複使用</li>
+                    <li><i class="fas fa-times"></i> 學習曲線陡峭</li>
+                    <li><i class="fas fa-times"></i> 不易整合其他 Python 套件</li>
+                </ul>
+            </div>
+            <div class="vs-card">
+                <h3 class="vs-title">PyGMT 全新體驗</h3>
+                <ul class="vs-list">
+                    <li><i class="fas fa-check"></i> 純 Python 語法</li>
+                    <li><i class="fas fa-check"></i> 物件導向，易於除錯</li>
+                    <li><i class="fas fa-check"></i> 與 pandas、numpy 無縫整合</li>
+                    <li><i class="fas fa-check"></i> Jupyter Notebook 完美支援</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="install" id="install">
+        <h2 class="section-title">立即開始</h2>
+        <p style="margin-bottom: 2rem; font-size: 1.2rem;">只需一行指令，即可安裝 PyGMT</p>
+        <div class="terminal">pip install pygmt</div>
+        <p style="margin-top: 2rem; opacity: 0.8;">建議使用 <a href="https://docs.conda.io/en/latest/miniconda.html" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">Miniconda</a> 建立獨立環境</p>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>快速連結</h3>
+                <a href="https://www.pygmt.org" target="_blank">官方網站</a>
+                <a href="https://www.pygmt.org/latest/tutorials/" target="_blank">教學文件</a>
+                <a href="https://github.com/GenericMappingTools/pygmt" target="_blank">GitHub 專案</a>
+                <a href="https://www.pygmt.org/latest/api/" target="_blank">API 參考</a>
+            </div>
+            <div class="footer-section">
+                <h3>社群</h3>
+                <a href="https://gitter.im/GenericMappingTools/pygmt" target="_blank">Gitter 聊天室</a>
+                <a href="https://forum.generic-mapping-tools.org" target="_blank">GMT 論壇</a>
+                <a href="https://twitter.com/pygmt" target="_blank">Twitter</a>
+            </div>
+            <div class="footer-section">
+                <h3>關於</h3>
+                <p>PyGMT 是 GMT (Generic Mapping Tools) 的 Python 包裝器，讓科學家與研究者能輕鬆繪製高品質地圖。</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 PyGMT 介紹頁面。基於開源精神製作。
+        </div>
+    </footer>
+</body>
+</html>
