@@ -191,6 +191,79 @@
         .icon-3d { color: #ea4335; }
         .icon-open { color: #f9ab00; }
         .icon-fast { color: #1a73e8; }
+
+        /* 影片區塊 */
+        .video-section {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin: 4rem 0;
+        }
+ |       .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: 0;
+        }
+        .video-info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: var(--gray);
+        }
+        .video-info i {
+            color: var(--secondary);
+            margin-right: 0.5rem;
+        }
+
+        /* 影片重點摘要 */
+        .video-highlights {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-top: 2rem;
+            border-left: 5px solid var(--primary);
+        }
+        .highlight-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            align-items: flex-start;
+        }
+        .timestamp {
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.8rem;
+            min-width: 60px;
+            text-align: center;
+        }
+        .highlight-code {
+            background: #2d2d2d;
+            color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            overflow-x: auto;
+        }
+
         .code-demo {
             background: var(--dark);
             color: #f8f9fa;
@@ -288,7 +361,7 @@
         }
         .install {
             background: white;
-            padding: 60px 40px;
+            padding: 60, 60px 40px;
             border-radius: 20px;
             text-align: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
@@ -382,6 +455,10 @@
                 width: 80%;
                 justify-content: center;
             }
+            .video-info {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -394,6 +471,7 @@
             <div class="nav-links">
                 <a href="#features">功能</a>
                 <a href="#demo">範例</a>
+                <a href="#video">影片教學</a>
                 <a href="#install">安裝</a>
                 <a href="#docs">文件</a>
             </div>
@@ -451,6 +529,85 @@
         </div>
     </section>
 
+    <!-- 影片教學區塊 -->
+    <section class="video-section" id="video">
+        <h2 class="section-title">快速入門影片（5分鐘）</h2>
+        <p style="text-align: center; margin-bottom: 2rem; color: #555;">
+            來自 <strong>AGU 2021</strong> 的官方 PyGMT 介紹，帶你從零開始畫出第一張地圖！
+        </p>
+
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" title="Quick Introduction to Plotting with PyGMT - AGU 2021" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <div class="video-info">
+            <span><i class="fas fa-eye"></i> 2,767 次觀看</span>
+            <span><i class="fas fa-thumbs-up"></i> 點讚數未知</span>
+            <span><i class="fas fa-comment"></i> 2 則留言</span>
+            <span><i class="fas fa-calendar"></i> 2021年12月13日</span>
+        </div>
+
+        <div class="video-highlights">
+            <h3 style="margin-bottom: 1rem; color: var(--primary);">
+                <i class="fas fa-star"></i> 影片重點摘要
+            </h3>
+
+            <div class="highlight-item">
+                <div class="timestamp">0:22</div>
+                <div>
+                    <strong>建立 Figure 物件</strong><br>
+                    <code class="highlight-code">fig = pygmt.Figure()</code>
+                </div>
+            </div>
+
+            <div class="highlight-item">
+                <div class="timestamp">0:40</div>
+                <div>
+                    <strong>設定地圖範圍與投影</strong><br>
+                    <code class="highlight-code">fig.basemap(region=[-180, 180, -70, 70], projection="M20c", frame=True)</code>
+                </div>
+            </div>
+
+            <div class="highlight-item">
+                <div class="timestamp">2:23</div>
+                <div>
+                    <strong>繪製海岸線</strong><br>
+                    <code class="highlight-code">fig.coast(shorelines=True)</code>
+                </div>
+            </div>
+
+            <div class="highlight-item">
+                <div class="timestamp">3:37</div>
+                <div>
+                    <strong>上色陸地與海洋</strong><br>
+                    <code class="highlight-code">fig.coast(land="darkgreen", water="lightsteelblue")</code>
+                </div>
+            </div>
+
+            <div class="highlight-item">
+                <div class="timestamp">4:18</div>
+                <div>
+                    <strong>繪製地球地形格網（遠端資料）</strong><br>
+                    <code class="highlight-code">fig.grdimage("@earth_relief_20m", shading=True)</code>
+                </div>
+            </div>
+
+            <div class="highlight-item">
+                <div class="timestamp">4:59</div>
+                <div>
+                    <strong>顯示成果</strong><br>
+                    <code class="highlight-code">fig.show()</code>
+                </div>
+            </div>
+        </div>
+
+        <p style="text-align: center; margin-top: 2rem;">
+            <a href="https://github.com/meghanrjones/agu2021/blob/main/examples/quick_tutorial.ipynb" target="_blank" style="color: var(--primary); font-weight: 600;">
+                <i class="fab fa-github"></i> 下載完整 Jupyter Notebook 範例
+            </a>
+        </p>
+    </section>
+
     <section id="demo">
         <div class="code-demo">
             <div class="code-header">
@@ -472,71 +629,4 @@ fig.text(text=<span class="string">"臺灣地圖 by PyGMT"</span>, x=121.5, y=24
 fig.savefig(<span class="string">"taiwan_map.png"</span>, dpi=300)
 fig.show()</code></pre>
             <div class="demo-output">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAAAACXBIWXMAAAsTAAALEwEAmpwYAAAgAElEQVR4nOzdd3gU1f7H8e9m03vvwb0X9i5Z+xJCCCEkESCCIAiCIIggSIKgICAKgiAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIppX4BAAAElFTkSuQmCC" alt="台灣地圖範例">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="why-pygmt">
-        <h2 class="section-title">PyGMT vs 傳統 GMT</h2>
-        <div class="comparison">
-            <div class="vs-card">
-                <h3 class="vs-title">傳統 GMT</h3>
-                <ul class="vs-list">
-                    <li><i class="fas fa-times"></i> 複雜的 Shell 指令</li>
-                    <li><i class="fas fa-times"></i> 難以除錯與重複使用</li>
-                    <li><i class="fas fa-times"></i> 學習曲線陡峭</li>
-                    <li><i class="fas fa-times"></i> 不易整合其他 Python 套件</li>
-                </ul>
-            </div>
-            <div class="vs-card">
-                <h3 class="vs-title">PyGMT 全新體驗</h3>
-                <ul class="vs-list">
-                    <li><i class="fas fa-check"></i> 純 Python 語法</li>
-                    <li><i class="fas fa-check"></i> 物件導向，易於除錯</li>
-                    <li><i class="fas fa-check"></i> 與 pandas、numpy 無縫整合</li>
-                    <li><i class="fas fa-check"></i> Jupyter Notebook 完美支援</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <section class="install" id="install">
-        <h2 class="section-title">立即開始</h2>
-        <p style="margin-bottom: 2rem; font-size: 1.2rem;">只需一行指令，即可安裝 PyGMT</p>
-        <div class="terminal">pip install pygmt</div>
-        <p style="margin-top: 2rem; opacity: 0.8;">建議使用 <a href="https://docs.conda.io/en/latest/miniconda.html" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">Miniconda</a> 建立獨立環境</p>
-    </section>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>快速連結</h3>
-                <a href="https://www.pygmt.org" target="_blank">官方網站</a>
-                <a href="https://www.pygmt.org/latest/tutorials/" target="_blank">教學文件</a>
-                <a href="https://github.com/GenericMappingTools/pygmt" target="_blank">GitHub 專案</a>
-                <a href="https://www.pygmt.org/latest/api/" target="_blank">API 參考</a>
-            </div>
-            <div class="footer-section">
-                <h3>社群</h3>
-                <a href="https://gitter.im/GenericMappingTools/pygmt" target="_blank">Gitter 聊天室</a>
-                <a href="https://forum.generic-mapping-tools.org" target="_blank">GMT 論壇</a>
-                <a href="https://twitter.com/pygmt" target="_blank">Twitter</a>
-            </div>
-            <div class="footer-section">
-                <h3>關於</h3>
-                <p>PyGMT 是 GMT (Generic Mapping Tools) 的 Python 包裝器，讓科學家與研究者能輕鬆繪製高品質地圖。</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-discord"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="copyright">
-            © 2025 PyGMT 介紹頁面。基於開源精神製作。
-        </div>
-    </footer>
-</body>
-</html>
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAAAACXBIWXMAAAsTAAALEwEAmpwYAAAgAElEQVR4nOzdd3gU1f7H8e9m03vvwb0X9i5Z+xJCCCEkESCCIAiCIIggSIKgICAKgiAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIggAIgg
